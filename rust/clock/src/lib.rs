@@ -1,3 +1,5 @@
+use std::fmt::Display;
+
 pub struct Clock;
 
 impl Clock {
