@@ -9,14 +9,14 @@ pub fn anagrams_for<'a>(word: &str, possible_anagrams: &[&str]) -> HashSet<&'a s
     }
 
     // Get the sorted version of the target word
-    let sorted_word = sorted_word(word);
+    let sort_word = sorted_word(word);
 
     // Create a HashSet to store valid anagrams
     let mut anagrams = HashSet::new();
 
     // Check each possible anagram
     for &candidate in possible_anagrams {
-        if sorted_word == sorted_word(candidate) {
+        if sort_word == sorted_word(candidate) {
             anagrams.insert(candidate);
         }
     }
