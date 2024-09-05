@@ -9,9 +9,8 @@ impl Clock {
     pub fn new(hours: i32, minutes: i32) -> Self {
         Clock { hour: hours, minute: minutes }
     }
-
-    pub fn add_minutes(&mut self, minutes: i32) {
-        self.minute += minutes
+    pub fn add_minutes(&mut self, minutes: i32) -> Self {
+        Clock::new(self.hour, self.minute + minutes)
     }
 }
 
