@@ -15,8 +15,7 @@ impl Clock {
 }
 
 impl fmt::Display for Clock {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        // Here we define how the struct should be formatted as a string
-        write!(f, "{}:{}", self.hour, self.minute)
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{:02}:{:02}", self.hour, self.minute)
     }
 }
