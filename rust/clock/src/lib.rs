@@ -1,5 +1,6 @@
 use std::fmt;
 
+#[derive(Debug, PartialEq)]
 pub struct Clock {
     hour: i32,
     minute: i32,
@@ -15,7 +16,8 @@ impl Clock {
 }
 
 impl fmt::Display for Clock {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+    fn fmt(&self, f: &mut fmt::Formatter
+    ) -> fmt::Result {
         write!(f, "{:02}:{:02}", self.hour, self.minute)
     }
 }
