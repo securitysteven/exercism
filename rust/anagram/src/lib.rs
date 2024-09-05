@@ -1,24 +1,21 @@
 use std::collections::HashSet;
 
 pub fn anagrams_for<'a>(word: &str, possible_anagrams: &[&'a str]) -> HashSet<&'a str> {
-    // Helper function to get a sorted version of the word
-    fn sort_word(word: &str) -> String {
-        let mut chars: Vec<char> = word.chars().collect();
-        chars.sort();
-        chars.into_iter().collect()
-    }
+    let word_lower = word.to_lowercase();
+    let word_sorted = get_sorted(&word_lower);
+    possible_anagrams
+        .iter()
+        .filter(|candidate| {
+            let candidate_lower = candidate.to_lowercase();
+            candidate_lower.len() == word_lower.len()
+                && candidate_lower != word_lower
+                && get_sorted(&candidate_lower) == word_sorted
+        }).copied()
+        .collect()
+}
 
-    // Get the sorted version of the target word
-    let sorted_word = sort_word(word);
-
-    // Create a HashSet to store valid anagrams
-    let mut anagrams = HashSet::new();
-
-    // Check each possible anagram
-    for &candidate in possible_anagrams {
-        if sorted_word == sort_word(candidate) {
-            anagrams.insert(candidate);
-        }
-    }
-    anagrams
+fn get_sorted(word: &str) -> Vec<char> {
+    let mut word_sorted: Vec<char> = word.chars().collect();
+    word_sorted.sort_unstable();
+    word_sorted
 }
