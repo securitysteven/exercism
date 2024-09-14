@@ -10,7 +10,6 @@ pub trait Planet {
     fn years_during(d: &Duration) -> f64 {
         d.seconds as f64 / Self::period()
     }
-
     fn period() -> f64;
 }
 
