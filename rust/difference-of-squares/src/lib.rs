@@ -1,6 +1,6 @@
 pub fn square_of_sum(n: u32) -> u32 {
     // let sum = n * (n + 1) / 2;  // Sum of first n natural numbers
-    // sum * sum  // Square of the sum
+    // sum * sum  // Square of the sum using multiplication
     (1..=n).sum::<u32>().pow(2)
 }
 
