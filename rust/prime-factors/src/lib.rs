@@ -1,7 +1,7 @@
 pub fn factors(n: u64) -> Vec<u64> {
-    let factors: Vec<u64> = Vec::new();
-    let numerator: n;
-    let denominator = 2;
+    let mut factors: Vec<u64> = Vec::new();
+    let numerator: u64 = n;
+    let mut denominator = 2;
 
     while numerator != 1 {
         if numerator % denominator == 0 {
@@ -10,4 +10,5 @@ pub fn factors(n: u64) -> Vec<u64> {
             denominator += 1;
         }
     }
+    factors
 }
