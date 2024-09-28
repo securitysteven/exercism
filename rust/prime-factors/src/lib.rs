@@ -1,4 +1,4 @@
-pub fn factors(n: u64) -> Vec<u64> {
+pub fn factors(mut n: u64) -> Vec<u64> {
     let mut factors = Vec::new();
     let mut divisor = 2;
 
