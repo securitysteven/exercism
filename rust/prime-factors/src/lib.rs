@@ -4,14 +4,10 @@ pub fn factors(n: u64) -> Vec<u64> {
     let denominator = 2;
 
     while numerator != 1 {
-        if is_whole_number(numerator, denominator) {
+        if numerator % denominator == 0 {
             factors.push(denominator);
         } else {
             denominator += 1;
         }
     }
-}
-
-fn is_whole_number(numerator: i32, denominator: i32) -> bool {
-    numerator % denominator == 0
 }
