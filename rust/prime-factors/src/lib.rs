@@ -1,14 +1,14 @@
 pub fn factors(n: u64) -> Vec<u64> {
-    let mut factors: Vec<u64> = Vec::new();
-    let numerator: u64 = n;
-    let mut denominator = 2;
+    let mut factors = Vec::new();
+    let mut divisor = 2;
 
-    while numerator != 1 {
-        if numerator % denominator == 0 {
-            factors.push(denominator);
-        } else {
-            denominator += 1;
+    // Start dividing n by the smallest divisor
+    while n > 1 {
+        while n % divisor == 0 {
+            factors.push(divisor);
+            n /= divisor;
         }
+        divisor += 1;
     }
     factors
 }
