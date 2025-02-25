@@ -1,20 +1,19 @@
 pub fn raindrops(n: u32) -> String {
     let mut result = String::new();
-    // Check divisibility and append sounds
-    if n % 3 == 0 {
-        result.push_str("Pling");
-    }
-    if n % 5 == 0 {
-        result.push_str("Plang");
-    }
-    if n % 7 == 0 {
-        result.push_str("Plong");
-    }
 
-    // If no sounds were added, return the number as a string
+    // Append sounds based on divisibility
+    [(3, "Pling"), (5, "Plang"), (7, "Plong")]
+        .iter()
+        .for_each(|&(divisor, sound)| {
+            if n % divisor == 0 {
+                result.push_str(sound);
+            }
+        });
+
+    // Return number as string if no sounds were added
     if result.is_empty() {
-        return n.to_string();
+        n.to_string()
+    } else {
+        result
     }
-
-    result
 }
