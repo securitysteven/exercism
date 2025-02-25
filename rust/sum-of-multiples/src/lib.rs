@@ -1,20 +1,20 @@
+use std::collections::HashSet;
+
 pub fn sum_of_multiples(limit: u32, factors: &[u32]) -> u32 {
-    // Filter out 0 values from the factors
-    let factors = factors.iter().filter(|&&factor| factor != 0).collect::<Vec<_>>();
+    // Filter out 0 values and process only valid factors
+    let valid_factors = factors.iter().filter(|&&factor| factor != 0);
 
-    let mut multiples = std::collections::HashSet::new();
+    // Use HashSet to store unique multiples
+    let mut multiples = HashSet::new();
 
-    // Loop through each factor
-    for &factor in factors {
-        let mut current_value = factor;
-
-        // Loop to generate multiples of the factor within the limit
-        while current_value < limit {
-            multiples.insert(current_value);  // Insert the multiple into the HashSet
-            current_value += factor;         // Move to the next multiple
+    // Loop through each valid factor
+    for &factor in valid_factors {
+        // Generate multiples of the factor within the limit
+        for multiple in (factor..limit).step_by(factor as usize) {
+            multiples.insert(multiple);
         }
     }
 
-    // Sum all the unique multiples
+    // Return the sum of all unique multiples
     multiples.iter().copied().sum()
 }
