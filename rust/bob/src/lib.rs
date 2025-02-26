@@ -15,19 +15,19 @@
 /// - If the message is a **question** (ends with `?`) → Returns `"Sure."`
 /// - Otherwise, returns `"Whatever."`
 pub fn reply(message: &str) -> &str {
-    let trimmed = message.trim(); // Remove leading & trailing whitespace
-
-    if trimmed.is_empty() {
+    let msg = message.trim_end();
+    if msg.is_empty() {
         return "Fine. Be that way!";
     }
 
-    let has_letters = trimmed.chars().any(|c| c.is_alphabetic());
-    let is_yelling = has_letters && trimmed.chars().all(|c| !c.is_lowercase());
+    let is_questioning = msg.ends_with('?');
+    let is_yelling =
+        msg.chars().any(|ch| ch.is_alphabetic()) && msg == msg.to_uppercase();
 
-    match (is_yelling, trimmed.ends_with('?')) {
+    match (is_yelling, is_questioning) {
         (true, true) => "Calm down, I know what I'm doing!",
-        (true, false) => "Whoa, chill out!",
-        (false, true) => "Sure.",
+        (true, _) => "Whoa, chill out!",
+        (_, true) => "Sure.",
         _ => "Whatever.",
     }
 }
