@@ -1,11 +1,23 @@
-// For want of a nail the shoe was lost.
-// For want of a shoe the horse was lost.
-// For want of a horse the rider was lost.
-// For want of a rider the message was lost.
-// For want of a message the battle was lost.
-// For want of a battle the kingdom was lost.
-// And all for the want of a nail.
-
+/// Builds a proverb-like string based on the items in the list.
+///
+/// The proverb starts with each item in the list being linked in a chain of consequences,
+/// and ends with "And all for the want of a {}."
+///
+/// # Arguments
+///
+/// * `list` - A slice of strings, where each string represents an item in the proverb.
+///
+/// # Returns
+///
+/// A string representing the full proverb, constructed from the items in the list.
+///
+/// # Example
+///
+/// ```rust
+/// let items = vec!["nail", "shoe", "horse", "rider", "message", "battle", "kingdom"];
+/// let proverb = build_proverb(&items);
+/// println!("{}", proverb);
+/// ```
 pub fn build_proverb(list: &[&str]) -> String {
     if list.is_empty() {
         return String::new(); // Return an empty string for an empty list
