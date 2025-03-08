@@ -19,7 +19,7 @@ impl HighScores {
     pub fn personal_best(&self) -> Option<u32> { self.scores.iter().max().copied() }
 
     pub fn personal_top_three(&self) -> Vec<u32> {
-        let mut top_scores: Vec<u32> = self.scores.clone();
+        let mut top_scores: Vec<u32> = self.scores.to_vec();
         top_scores.sort_unstable_by(|a, b| b.cmp(a));
         top_scores.truncate(3);
         top_scores
