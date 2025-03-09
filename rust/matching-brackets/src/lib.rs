@@ -3,23 +3,11 @@ pub fn brackets_are_balanced(string: &str) -> bool {
 
     for ch in string.chars() {
         match ch {
-            '(' | '{' | '[' => stack.push(ch),
-            ')' => {
-                if stack.pop() != Some('(') {
-                    return false;
-                }
-            }
-            '}' => {
-                if stack.pop() != Some('{') {
-                    return false;
-                }
-            }
-            ']' => {
-                if stack.pop() != Some('[') {
-                    return false;
-                }
-            }
-            _ => continue, // Ignore non-bracket characters
+            '(' | '[' | '{' => stack.push(ch),
+            ')' => if stack.pop() != Some('(') { return false; },
+            ']' => if stack.pop() != Some('[') { return false; },
+            '}' => if stack.pop() != Some('{') { return false; },
+            _ => {} // Ignore non-bracket characters
         }
     }
 
