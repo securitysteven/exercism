@@ -1,102 +1,41 @@
 use std::fs::File;
-use std::io::{self, BufRead};
-use std::path::Path;
-use anyhow::{Context, Result};
+use std::io::{Error, BufReader, BufRead};
 
 #[derive(Debug)]
-pub struct Flags {
-    show_line_numbers: bool,
-    list_files_only: bool,
-    case_insensitive: bool,
-}
+pub struct Flags { n: bool, l: bool, i: bool, v: bool, x: bool }
 
 impl Flags {
     pub fn new(flags: &[&str]) -> Self {
-        let mut show_line_numbers = false;
-        let mut list_files_only = false;
-        let mut case_insensitive = false;
-
-        // Iterate over the flags and set the appropriate options
-        for &flag in flags {
-            match flag {
-                "-n" => show_line_numbers = true,
-                "-l" => list_files_only = true,
-                "-i" => case_insensitive = true,
-                _ => {}
-            }
+        Self {
+            n: flags.contains(&"-n"),
+            l: flags.contains(&"-l"),
+            i: flags.contains(&"-i"),
+            v: flags.contains(&"-v"),
+            x: flags.contains(&"-x"),
         }
-
-        // If both flags are provided, prioritize `-l` over `-n`
-        if list_files_only {
-            show_line_numbers = false; // Invalidate `-n` if `-l` is present
-        }
-
-        Flags {
-            show_line_numbers,
-            list_files_only,
-            case_insensitive,
-        }
-    }
-
-    pub fn should_show_line_numbers(&self) -> bool {
-        self.show_line_numbers
-    }
-
-    pub fn should_list_files_only(&self) -> bool {
-        self.list_files_only
-    }
-
-    pub fn is_case_insensitive(&self) -> bool {
-        self.case_insensitive
     }
 }
 
-pub fn grep(pattern: &str, flags: &Flags, files: &[&str]) -> Result<Vec<String>> {
-    let mut results = Vec::new();
-
-    for &file in files {
-        let path = Path::new(file);
-
-        // Attempt to open the file
-        let file = File::open(path)
-            .with_context(|| format!("Failed to open file: {}", file))?;
-
-        let reader = io::BufReader::new(file);
-        let mut found_match = false;
-
-        // If case-insensitive flag is set, make the pattern lowercase
-        let pattern = if flags.is_case_insensitive() {
-            pattern.to_lowercase()
-        } else {
-            pattern.to_string()
-        };
-
-        // Iterate through each line of the file
-        for (line_number, line) in reader.lines().enumerate() {
+pub fn grep(pattern: &str, flags: &Flags, files: &[&str]) -> Result<Vec<String>, Error> {
+    let p = if flags.i { pattern.to_lowercase() } else { pattern.to_owned() };
+    let mut res = vec![];
+    for file in files {
+        let f = File::open(file)?;
+        let prefix = if files.len() > 1 { format!("{}:", file) } else { "".to_owned() };
+        for (i, line) in BufReader::new(f).lines().enumerate() {
             let line = line?;
-
-            // Perform case-insensitive match if the flag is set
-            let line_to_check = if flags.is_case_insensitive() {
-                line.to_lowercase()
-            } else {
-                line.to_string()
-            };
-
-            // Check if the line contains the pattern
-            if line_to_check.contains(&pattern) {
-                found_match = true;
-                if flags.should_show_line_numbers() {
-                    // If `-n` flag is set, include line numbers in the result
-                    results.push(format!("{}:{}:{}", path.display(), line_number + 1, line));
+            let l = if flags.i { line.to_lowercase() } else { line.to_string() };
+            let found = if flags.x { l == p } else { l.contains(&p) };
+            if if flags.v { !found } else { found } {
+                if flags.l {
+                    res.push(file.to_string());
+                    break;
+                } else {
+                    let prefix2 = if flags.n { format!("{}:", i + 1) } else { "".to_owned() };
+                    res.push(format!("{}{}{}", prefix, prefix2, line));
                 }
             }
         }
-
-        // If `-l` flag is set, we only care about filenames, not line numbers
-        if flags.should_list_files_only() && found_match {
-            results.push(path.display().to_string());
-        }
     }
-
-    Ok(results)
+    Ok(res)
 }
