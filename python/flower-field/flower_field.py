@@ -33,9 +33,8 @@ def _validate(garden: List[str]) -> None:
     for row in garden:
         if not isinstance(row, str) or len(row) != expected_len:
             raise ValueError(error_msg)
-        for ch in row:
-            if ch not in (" ", "*"):
-                raise ValueError(error_msg)
+        if set(row) - {" ", "*"}:
+            raise ValueError(error_msg)
 
 def annotate(garden: List[str]) -> List[str]:
     """
