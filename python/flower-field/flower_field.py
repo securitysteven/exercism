@@ -29,9 +29,9 @@ def _validate(garden: List[str]) -> None:
         raise ValueError(error_msg)
     if len(garden) == 0:
         return
-    row_len = len(garden[0])
+    expected_len = len(garden[0])
     for row in garden:
-        if not isinstance(row, str) or len(row) != row_len:
+        if not isinstance(row, str) or len(row) != expected_len:
             raise ValueError(error_msg)
         for ch in row:
             if ch not in (" ", "*"):
