@@ -7,15 +7,15 @@ def tick(matrix):
         return []
 
     rows = len(matrix)
-    cols = len(matrix[0])
-    new_matrix = [[0 for _ in range(cols)] for _ in range(rows)]
+    cols = len(matrix[0]) if rows else 0
+    new_matrix = [[0] * cols for _ in range(rows)]
 
     for r in range(rows):
         for c in range(cols):
-            # Count live neighbors
             live_neighbors = 0
-            for dr in [-1, 0, 1]:
-                for dc in [-1, 0, 1]:
+
+            for dr in (-1, 0, 1):
+                for dc in (-1, 0, 1):
                     if dr == 0 and dc == 0:
                         continue
                     nr, nc = r + dr, c + dc
