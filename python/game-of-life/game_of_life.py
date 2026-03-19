@@ -24,14 +24,8 @@ def tick(matrix):
 
             # Apply rules
             if matrix[r][c] == 1:
-                if live_neighbors in [2, 3]:
-                    new_matrix[r][c] = 1
-                else:
-                    new_matrix[r][c] = 0
+                new_matrix[r][c] = 1 if live_neighbors in (2, 3) else 0
             else:
-                if live_neighbors == 3:
-                    new_matrix[r][c] = 1
-                else:
-                    new_matrix[r][c] = 0
+                new_matrix[r][c] = 1 if live_neighbors == 3 else 0
 
     return new_matrix
